@@ -32,9 +32,10 @@ function App() {
   return (
     <div className="App">
       <h1>Person YAML Browser</h1>
+      <h2>viewing {files.length} files</h2>
       <input type="button" value="pick directory" onClick={pickDirectory} />
       <div className="three-column">
-        <FileList files={files} setSelectedFile={setSelectedFile} />
+        <FileList files={files} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
         <FileDetail file={files[selectedFile]} />
       </div>
     </div>

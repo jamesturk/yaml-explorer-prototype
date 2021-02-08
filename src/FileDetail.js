@@ -10,21 +10,21 @@ function object_to_html(obj) {
   for (const [key, val] of Object.entries(obj)) {
     if (typeof val === "string") {
       elements.push(
-        <tr>
+        <tr key={key}>
           <td>{key}</td>
           <td>{val}</td>
         </tr>
       );
     } else if (Array.isArray(val)) {
       elements.push(
-        <tr>
+        <tr key={key}>
           <td>{key}</td>
           <td>{list_to_html(val)}</td>
         </tr>
       );
     } else if (typeof val === "object") {
       elements.push(
-        <tr>
+        <tr key={key}>
           <td>{key}</td>
           <td>{object_to_html(val)}</td>
         </tr>
