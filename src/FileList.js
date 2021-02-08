@@ -39,12 +39,12 @@ function FileList(props) {
   if (!props.files) {
     return <div>No files loaded.</div>;
   }
-  const files = props.files.map((f, i) => (
+  const files = Object.entries(props.files).map(([filename, p]) => (
     <ListRow
-      person={f.data}
-      key={f.name}
-      onClick={() => props.setSelectedFile(i)}
-      selected={i === props.selectedFile}
+      person={p.data}
+      key={filename}
+      onClick={() => props.setSelectedFile(filename)}
+      selected={filename === props.selectedFile}
     />
   ));
   return (
