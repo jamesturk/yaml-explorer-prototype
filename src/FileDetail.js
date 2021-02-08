@@ -1,5 +1,5 @@
 function list_to_html(list) {
-  if(list.length === 0){
+  if (list.length === 0) {
     return "[]";
   }
   return list.map(object_to_html);
