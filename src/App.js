@@ -2,6 +2,7 @@ import {useState} from 'react';
 import YAML from 'yaml';
 import FileList from './FileList';
 import FileDetail from './FileDetail';
+import FileEditor from './FileEditor';
 
 const dataDir = "/Users/james/code/os/people/data/nc";
 
@@ -20,6 +21,7 @@ function App() {
       let file = await handle.getFile();
       let fr = new FileReader();
       fr.onload = function (e) {
+        obj.raw = fr.result;
         obj.data = YAML.parse(fr.result);
       }
       await fr.readAsText(file);
@@ -37,6 +39,7 @@ function App() {
       <div className="three-column">
         <FileList files={files} selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
         <FileDetail file={files[selectedFile]} />
+        <FileEditor file={files[selectedFile]} />
       </div>
     </div>
   );
