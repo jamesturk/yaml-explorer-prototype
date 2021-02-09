@@ -7,6 +7,9 @@ function list_to_html(list) {
 
 function object_to_html(obj) {
   let elements = [];
+  if(!obj) {
+    return "";
+  }
   for (const [key, val] of Object.entries(obj)) {
     if (typeof val === "string") {
       elements.push(

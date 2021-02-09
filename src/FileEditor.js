@@ -4,7 +4,7 @@ function FileEditor(props) {
   }
   return (
     <div className="file-editor">
-      <textarea>{props.file.raw}</textarea>
+      <textarea value={props.file.raw} onChange={props.onChange} />
     </div>
   );
 }

@@ -1,16 +1,24 @@
 function currentParty(person) {
-  for (const party of person.party) {
-    if (party.end_date === undefined) {
-      return party.name;
+  try {
+    for (const party of person.party) {
+      if (party.end_date === undefined) {
+        return party.name;
+      }
     }
+  } catch (err) {
+    return "";
   }
 }
 
 function currentRole(person) {
-  for (const role of person.roles) {
-    if (role.end_date === undefined) {
-      return role;
+  try {
+    for (const role of person.roles) {
+      if (role.end_date === undefined) {
+        return role;
+      }
     }
+  } catch (err) {
+    return "";
   }
 }
 
@@ -19,7 +27,6 @@ function ListRow(props) {
     return "loading...";
   } else {
     const role = currentRole(props.person);
-    console.log(role);
     return (
       <tr
         className={props.selected ? "selected" : ""}

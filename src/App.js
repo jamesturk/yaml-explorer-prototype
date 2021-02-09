@@ -10,6 +10,7 @@ function App() {
   const [dirHandle, setDirHandle] = useState();
   const [files, setFiles] = useState({});
   const [selectedFile, setSelectedFile] = useState();
+  const [error, setError] = useState();
 
   async function pickDirectory() {
     const dirHandle = await window.showDirectoryPicker();
@@ -26,6 +27,18 @@ function App() {
     setFiles(newFiles);
   }
 
+  function reparseYaml(event) {
+    console.log("update", selectedFile, event.target.value);
+    let newFiles = {...files};
+    newFiles[selectedFile].raw = event.target.value;
+    try {
+      newFiles[selectedFile].data = YAML.parse(event.target.value);
+    } catch (err) {
+      setError("file is not valid YAML: " + err);
+    }
+    setFiles(newFiles);
+  }
+
   return (
     <div className="App">
       <h1>Person YAML Browser</h1>
@@ -38,7 +51,7 @@ function App() {
           setSelectedFile={setSelectedFile}
         />
         <FileDetail file={files[selectedFile]} />
-        <FileEditor file={files[selectedFile]} />
+        <FileEditor file={files[selectedFile]} onChange={reparseYaml} />
       </div>
     </div>
   );
