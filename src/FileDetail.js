@@ -7,7 +7,7 @@ function list_to_html(list) {
 
 function object_to_html(obj) {
   let elements = [];
-  if(!obj) {
+  if (!obj) {
     return "";
   }
   for (const [key, val] of Object.entries(obj)) {
@@ -43,7 +43,7 @@ function FileDetail(props) {
   }
   return (
     <div className="file-detail">
-      { props.file.error ? <div class="error">{props.file.error}</div> : "" }
+      {props.file.error ? <div class="error">{props.file.error}</div> : ""}
       <table>
         <thead>
           <tr>
