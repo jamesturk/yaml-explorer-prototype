@@ -43,6 +43,7 @@ function FileDetail(props) {
   }
   return (
     <div className="file-detail">
+      { props.file.error ? <div class="error">{props.file.error}</div> : "" }
       <table>
         <thead>
           <tr>

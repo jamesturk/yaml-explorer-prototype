@@ -10,7 +10,6 @@ function App() {
   const [dirHandle, setDirHandle] = useState();
   const [files, setFiles] = useState({});
   const [selectedFile, setSelectedFile] = useState();
-  const [error, setError] = useState();
 
   async function pickDirectory() {
     const dirHandle = await window.showDirectoryPicker();
@@ -20,7 +19,11 @@ function App() {
       let file = await handle.getFile();
       let fr = new FileReader();
       fr.onload = function (e) {
-        newFiles[name] = { raw: fr.result, data: YAML.parse(fr.result) };
+        newFiles[name] = {
+          raw: fr.result,
+          data: YAML.parse(fr.result),
+          error: null,
+        };
       };
       await fr.readAsText(file);
     }
@@ -29,12 +32,13 @@ function App() {
 
   function reparseYaml(event) {
     console.log("update", selectedFile, event.target.value);
-    let newFiles = {...files};
+    let newFiles = { ...files };
     newFiles[selectedFile].raw = event.target.value;
     try {
       newFiles[selectedFile].data = YAML.parse(event.target.value);
+      newFiles[selectedFile].error = null;
     } catch (err) {
-      setError("file is not valid YAML: " + err);
+      newFiles[selectedFile].error = err.message;
     }
     setFiles(newFiles);
   }

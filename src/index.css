@@ -24,6 +24,11 @@ li {
   background-color: yellow;
 }
 
+.error {
+  background: #cc0000;
+  padding: 1em;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
