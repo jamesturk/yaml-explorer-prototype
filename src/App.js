@@ -1,10 +1,11 @@
 import { useState } from "react";
 import YAML from "yaml";
+import { Octokit } from "@octokit/rest";
 import FileList from "./FileList";
 import FileDetail from "./FileDetail";
 import FileEditor from "./FileEditor";
+import {dataDir, githubToken} from "./config";
 
-const dataDir = "/Users/james/code/os/people/data/nc";
 
 function App() {
   const [dirHandle, setDirHandle] = useState();
@@ -13,8 +14,8 @@ function App() {
 
   async function pickDirectory() {
     const dirHandle = await window.showDirectoryPicker();
-    let newFiles = {};
     setDirHandle(dirHandle);
+    let newFiles = {};
     for await (let [name, handle] of dirHandle) {
       let file = await handle.getFile();
       let fr = new FileReader();
@@ -26,6 +27,35 @@ function App() {
         };
       };
       await fr.readAsText(file);
+    }
+    setFiles(newFiles);
+  }
+
+  async function loadFromGitHub() {
+    const owner = "openstates";
+    const repo = "people";
+    const basePath = "data/nc/legislature";
+    const octokit = new Octokit({auth: githubToken});
+    const files = await octokit.repos.getContent({
+      owner,
+      repo,
+      path: basePath,
+    });
+    let newFiles = {};
+    for (let file of files.data) {
+      let fileResponse = await octokit.repos.getContent({
+        owner,
+        repo,
+        path: basePath + "/" + file.name,
+        headers: {
+          Accept: "application/vnd.github.v3.raw",
+        },
+      });
+      newFiles[file.name] = {
+        raw: fileResponse.data,
+        data: YAML.parse(fileResponse.data),
+        error: null,
+      };
     }
     setFiles(newFiles);
   }
@@ -48,6 +78,7 @@ function App() {
       <h1>Person YAML Browser</h1>
       <h2>viewing {files.length} files</h2>
       <input type="button" value="pick directory" onClick={pickDirectory} />
+      <input type="button" value="load from GitHub" onClick={loadFromGitHub} />
       <div className="three-column">
         <FileList
           files={files}
