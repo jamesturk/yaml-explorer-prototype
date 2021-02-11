@@ -43,7 +43,7 @@ function App() {
     });
     let newFiles = {};
     for (let file of files.data) {
-      let fileResponse = await octokit.repos.getContent({
+      const fileResponse = await octokit.repos.getContent({
         owner,
         repo,
         path: basePath + "/" + file.name,
@@ -76,7 +76,6 @@ function App() {
   return (
     <div className="App">
       <h1>Person YAML Browser</h1>
-      <h2>viewing {files.length} files</h2>
       <input type="button" value="pick directory" onClick={pickDirectory} />
       <input type="button" value="load from GitHub" onClick={loadFromGitHub} />
       <div className="three-column">
